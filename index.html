@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portafolio estilo Persona 3 Reload (Copy)</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#001233;--deep:#00081f;--blue:#0b3bd6;--cyan:#38e8ff;--ice:#cfefff;--white:#fff;
+--display:'Anton',Impact,'Arial Narrow',sans-serif;--body:'Barlow Condensed','Arial Narrow',Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--deep);color:var(--white);font-family:var(--body);font-size:20px;overflow:hidden}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+
+/* Fondo animado */
+.bg{position:fixed;inset:0;background:linear-gradient(160deg,#001a66 0%,var(--navy) 55%,var(--deep) 100%);overflow:hidden;z-index:0}
+.bg::before{content:"";position:absolute;inset:-50%;background:repeating-linear-gradient(115deg,transparent 0 90px,rgba(56,232,255,.07) 90px 140px);animation:drift 14s linear infinite}
+.bg::after{content:"";position:absolute;right:-10%;top:-20%;width:70vw;height:140vh;background:radial-gradient(closest-side,rgba(11,59,214,.7),transparent);}
+@keyframes drift{to{transform:translateX(280px)}}
+.sq{position:absolute;border:3px solid rgba(56,232,255,.35);width:60px;height:60px;animation:rise 9s linear infinite}
+@keyframes rise{from{transform:translateY(110vh) rotate(0)}to{transform:translateY(-20vh) rotate(180deg)}}
+
+.screen{position:fixed;inset:0;z-index:1;display:none;padding:max(24px,env(safe-area-inset-top,0px)) 6vw 90px}
+.screen.on{display:flex}
+
+/* Carga */
+#load{flex-direction:column;justify-content:center;align-items:flex-start;background:var(--navy);z-index:5}
+#load h1{font-family:var(--display);font-size:clamp(48px,11vw,150px);font-weight:400;letter-spacing:.02em;line-height:1;transform:skewX(-8deg)}
+#bar{width:min(560px,80vw);height:10px;background:rgba(255,255,255,.15);margin:20px 0 10px;transform:skewX(-20deg)}
+#fill{height:100%;width:0;background:var(--cyan)}
+#pct{font-family:var(--display);font-size:32px;color:var(--cyan)}
+#start{margin-top:22px;font-size:24px;color:var(--ice);opacity:0;transition:opacity .3s}
+#start.show{opacity:1;animation:blink 1.1s steps(2) infinite}
+@keyframes blink{50%{opacity:.3}}
+
+/* Menú */
+#menu{align-items:center;gap:6vw}
+.list{display:flex;flex-direction:column;gap:10px;width:min(520px,48vw)}
+.item{font-family:var(--display);font-size:clamp(28px,5vw,62px);text-align:left;padding:4px 36px 4px 22px;letter-spacing:.03em;line-height:1.05;transform:skewX(-12deg);transition:transform .15s,background .15s,color .15s;color:var(--ice);border-left:6px solid transparent}
+.item.sel{background:var(--white);color:var(--navy);transform:skewX(-12deg) translateX(26px);border-left-color:var(--cyan);box-shadow:-10px 10px 0 var(--blue)}
+.info{flex:1;max-width:560px;transform:skewX(-6deg)}
+.info small{font-size:22px;color:var(--cyan);font-weight:700;letter-spacing:.08em}
+.info h2{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,110px);line-height:1;margin:6px 0 14px}
+.info p{font-size:clamp(20px,2.2vw,28px);line-height:1.3;color:var(--ice);max-width:30ch}
+
+/* Paneles */
+.panel{flex-direction:column}
+.panel h2.t{font-family:var(--display);font-weight:400;font-size:clamp(54px,10vw,130px);line-height:1;transform:skewX(-10deg);text-shadow:6px 6px 0 var(--blue)}
+.who{color:var(--cyan);font-weight:700;font-size:22px;letter-spacing:.06em;transform:skewX(-10deg)}
+.cols{display:flex;gap:4vw;flex:1;min-height:0;margin-top:18px}
+.col-l{width:min(380px,40%);display:flex;flex-direction:column;gap:8px;overflow:auto;padding:6px 10px 6px 0}
+.row{font-family:var(--display);font-size:30px;text-align:left;padding:6px 20px;transform:skewX(-12deg);background:rgba(255,255,255,.08);color:var(--ice);transition:all .15s;letter-spacing:.03em}
+.row.sel{background:var(--white);color:var(--navy);transform:skewX(-12deg) translateX(16px);box-shadow:-6px 6px 0 var(--blue)}
+.col-r{flex:1;background:rgba(0,8,31,.72);border:2px solid rgba(56,232,255,.5);padding:28px 32px;overflow:auto;clip-path:polygon(0 0,100% 0,100% calc(100% - 28px),calc(100% - 28px) 100%,0 100%);}
+.col-r h3{font-family:var(--display);font-weight:400;font-size:clamp(32px,4vw,52px);margin-bottom:10px}
+.col-r p{line-height:1.35;color:var(--ice);max-width:60ch;font-size:23px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.tags span{background:var(--blue);padding:2px 14px;font-weight:700;transform:skewX(-12deg)}
+.go{display:inline-block;background:var(--cyan);color:var(--navy);font-weight:700;padding:6px 22px;text-decoration:none;transform:skewX(-12deg);font-size:22px}
+.cat{font-family:var(--display);font-size:clamp(28px,4vw,48px);color:var(--cyan);margin-bottom:18px}
+.sk{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:10px 18px;align-items:center;margin-bottom:12px;font-size:24px;font-weight:700}
+.pips{display:flex;gap:5px}
+.pips i{flex:1;height:16px;background:rgba(255,255,255,.15);transform:skewX(-20deg)}
+.pips i.f{background:var(--cyan)}
+.about{display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.avatar{width:150px;height:150px;flex:none;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;font-family:var(--display);font-size:64px;clip-path:polygon(15% 0,100% 0,85% 100%,0 100%)}
+.msg{background:rgba(255,255,255,.08);padding:10px 18px;margin:8px 0;color:var(--ice);transform:skewX(-8deg);font-size:23px}
+.code{background:#00040f;border-left:4px solid var(--cyan);padding:14px 18px;margin-top:14px;overflow:auto;font:16px/1.45 ui-monospace,Consolas,monospace;color:var(--cyan);white-space:pre}
+.col-r p+p{margin-top:12px}
+.acts{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
+.go.file{background:var(--white)}
+.pic{display:block;max-width:100%;max-height:260px;object-fit:cover;margin:12px 0 8px;border:2px solid rgba(56,232,255,.5)}
+
+/* Barra inferior */
+.hints{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;gap:26px;justify-content:flex-end;align-items:center;padding:12px 6vw calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,rgba(0,8,31,.95));font-weight:700;font-size:21px}
+.hints button{display:flex;gap:8px;align-items:center}
+.hints kbd{font-family:var(--display);font-weight:400;background:var(--white);color:var(--navy);padding:0 10px;transform:skewX(-12deg);min-width:30px;text-align:center}
+.hints .mute{margin-right:auto;color:var(--ice)}
+#load~.hints{display:none}
+
+@media (max-width:760px){
+ #menu{flex-direction:column;align-items:flex-start;justify-content:center;gap:20px}
+ .list{width:100%}.item.sel{transform:skewX(-12deg) translateX(10px)}
+ .info{display:none}
+ .cols{flex-direction:column}.col-l{width:100%;flex-direction:row;overflow-x:auto;flex:none}
+ .row{font-size:22px;white-space:nowrap}
+ .screen{padding-bottom:80px}
+}
+@media (prefers-reduced-motion:reduce){.bg::before,.sq,#start.show{animation:none}.item,.row{transition:none}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+ <div class="sq" style="left:8%;animation-delay:-2s"></div><div class="sq" style="left:34%;width:34px;height:34px;animation-delay:-6s"></div>
+ <div class="sq" style="left:62%;width:80px;height:80px;animation-delay:-4s"></div><div class="sq" style="left:88%;animation-delay:-8s"></div>
+</div>
+
+<section id="load" class="screen on">
+ <h1>CARGANDO...</h1>
+ <div id="bar"><div id="fill"></div></div>
+ <div id="pct">0%</div>
+ <div id="start">Pulsa ENTER o toca la pantalla para entrar</div>
+</section>
+
+<section id="menu" class="screen" aria-label="Menú principal">
+ <div class="list" id="list" role="menu"></div>
+ <div class="info"><small id="mRole"></small><h2 id="mName"></h2><p id="mDesc"></p></div>
+</section>
+
+<section id="proyectos" class="screen panel">
+ <div class="who nm"></div><h2 class="t">PROYECTOS</h2>
+ <div class="cols"><div class="col-l" id="pList"></div><div class="col-r" id="pView"></div></div>
+</section>
+
+<section id="habilidades" class="screen panel">
+ <div class="who nm"></div><h2 class="t">HABILIDADES</h2>
+ <div class="cols"><div class="col-l" id="sList"></div><div class="col-r" id="sView"></div></div>
+</section>
+
+<section id="sobre-mi" class="screen panel">
+ <div class="who nm"></div><h2 class="t">SOBRE MÍ</h2>
+ <div class="cols"><div class="col-r" id="aView" style="margin-top:0"></div></div>
+</section>
+
+<section id="contacto" class="screen panel">
+ <div class="who nm"></div><h2 class="t">CONTACTO</h2>
+ <div class="cols"><div class="col-l" id="cList"></div><div class="col-r" id="cView"></div></div>
+</section>
+
+<section id="codigos" class="screen panel">
+ <div class="who nm"></div><h2 class="t">CÓDIGOS</h2>
+ <div class="cols"><div class="col-l" id="kList"></div><div class="col-r" id="kView"></div></div>
+</section>
+
+<section id="clase" class="screen panel">
+ <div class="who nm"></div><h2 class="t">APRENDIDO EN CLASE</h2>
+ <div class="cols"><div class="col-l" id="lList"></div><div class="col-r" id="lView"></div></div>
+</section>
+
+<div class="hints" id="hints">
+ <button class="mute" id="mute" aria-label="Activar o silenciar sonido">Sonido: <kbd>M</kbd> <span id="mTxt">sí</span></button>
+ <button id="hEnter"><kbd>ENTER</kbd> Confirmar</button>
+ <button id="hEsc"><kbd>ESC</kbd> <span id="escTxt">Cerrar</span></button>
+</div>
+
+<script>
+/* ====== EDITA TUS DATOS AQUÍ ====== */
+const D={
+ name:"Samuel Morera",
+ role:"Estudiante de ing sistemas",
+ intro:" ",
+ about:["Hola, soy samuel. Estudio y construyo sitios web con foco en diseño y animación.","“Agradezco cada error estúpido y cada broma tonta que intenté hacer.” -Bo Burnham"],
+ /* foto = imagen en la carpeta "fotos" | doc = documento (Word, Excel, PDF...) en la carpeta "archivos". Solo cambia los nombres. */
+ projects:[
+  {t:"calculadorade matrices 2x2",d:"El desarollo de la calculadora de matrices para algoritmos y programacion.",tags:["PSINT"],doc:"proalg.pdf"},
+  {t:"calculadorade matrices 3x3",d:"La elavoracin de una calculadora de matrices para algoritmos y programacion.",tags:["PSINT"],doc:"proye.pdf"},
+  {t:"Bitacora deportiva",d:"Proyecto de calculo diferencial sobre el analisis de estadisticas deportivas.",tags:["MATLAB"],doc:"bita.pdf"},
+ ],
+ skills:[
+  {c:"TECHNICAL SKILLS",s:[["Programacion",9],["manejo de herramientas digitales",6],["Rapidez",7]]},
+  {c:"PERSONAL SKILLS",s:[["Diciplina",7],["Trabajo en equipo",8],["Comunicacion",7]]},
+  {c:"CREATIVE SKILLS",s:[["Creatividad",8],["Resuloción de problemas",7],["Aprendizaje autonomo",6]]}
+ ],
+ /* Códigos hechos: t = título, d = descripción, code = el código (texto) */
+ codes:[
+  {t:"Clasificar edades",d:"",tags:["Python"],code:`def clasificR_EDAD(edad):
+    if edad < 13:
+        return "niño"
+    elif 13 <= edad < 18:
+        return "adolecente"
+    elif 18 <= edad < 65:
+        return "adulto"
+    else:
+        return "adulto mayor"
+
+n = int(input("cuantas edades deseas ingresar?"))
+
+edades = []
+
+for i in range(n):
+    edad = int(input(f"ingresa la edad {i+1}: "))
+    edades.append(edad)
+clasificaciones = []
+
+for edad in edades:
+    clasificaciones.append(clasificR_EDAD(edad))
+print("casificacion de edades: ", clasificaciones)`},
+  {t:"Caja registradora",d:"",tags:["Python"],code:`import pandas as pd
+import numpy as np
+
+n = int(input("cuantos productos quieres?"))
+productos, precios, cantidades = [], [], []
+
+for i in range(n):
+    productos.append(input(f"numbre del producto {i +1}: "))
+    precios.append((input("   precio unitario: ")))
+    cantidades.append(int(input("     cantidad vendida:  ")))
+    
+subtotales = np.array(precios) * np.array(cantidades)
+factura = pd.DataFrame({"producto": productos, " precios": precios, "cantidad": cantidades, "subtotal": subtotales})
+print(factura.to_string(index=False))
+print("total a pagar: ", subtotales.sum())
+print("producto mas vendido: ", factura.loc[factura["cantidad"].idxmax(), "producto"])`},
+  {t:"Registro de contactos",d:"",tags:["Python"],code:`import pandas as pd
+
+
+n = int(input("cuantos contactos tienen?"))
+contactos, numeros = [], []
+
+for i in range(n):
+    contactos.append(input(f"nombre del contacto{i +1}: "))
+    numeros.append(input("numero del contacto: "))
+    
+tabla = pd.DataFrame({"nombre": contactos, "numeros": numeros})
+print(tabla.to_string(index=False))`},
+  {t:"Contador de palabras",d:"",tags:["Python"],code:`import re
+from collections import Counter
+
+def contar_palabras(texto):
+    # Convertir a minúsculas y extraer solo palabras (ignorando puntuación)
+    palabras = re.findall(r'\b\w+\b', texto.lower())
+    
+    # Contar la frecuencia de cada palabra
+    frecuencias = Counter(palabras)
+    
+    return frecuencias
+
+# Ejemplo de uso
+texto_usuario = input("letra")
+resultado = contar_palabras(texto_usuario)
+
+# Mostrar resultados
+for palabra, conteo in resultado.items():
+    print(f"'{palabra}': {conteo}")`},
+ ],
+ /* Cosas aprendidas en clase: t = tema, p = párrafos de texto */
+ learned:[
+  {t:"Historia de la ing en sistemas",p:["La Ingeniería de Sistemas surgió a mediados del siglo XX con el desarrollo de las primeras computadoras y la necesidad de procesar grandes cantidades de información. Con el tiempo, evolucionó gracias a los avances en programación, redes, bases de datos e inteligencia artificial. Actualmente, es una disciplina fundamental para diseñar, desarrollar y mantener sistemas tecnológicos que facilitan la comunicación, la gestión de información y la solución de problemas en diversos campos."]},
+  {t:"El princioio de pareto",p:["El principio de Pareto, también conocido como la regla del 80/20, establece que, en muchas situaciones, aproximadamente el 80 % de los resultados proviene del 20 % de las causas. Este principio fue propuesto a partir de las observaciones del economista Vilfredo Pareto y se aplica en áreas como la administración, la economía y la ingeniería de sistemas para identificar los factores más importantes, priorizar tareas y aprovechar mejor los recursos."]},
+  {t:"El diagrama de espina de pescado ",p:["El diagrama de Ishikawa, también conocido como diagrama de causa y efecto o espina de pescado, es una herramienta que permite identificar y organizar las posibles causas de un problema. Fue desarrollado por el ingeniero japonés Kaoru Ishikawa y se utiliza en áreas como la ingeniería de sistemas, la industria y la administración para analizar fallas, encontrar su origen y proponer soluciones que mejoren los procesos y la calidad."]}
+ ],
+ contact:[["Correo","samuerlfmorera@gmail.com"],["Instagram","@sableauthor"]]
+};
+const MENU=[["PROYECTOS","proyectos","Lo que he construido."],["CÓDIGOS","codigos","Lo que he programado."],["APRENDIDO","clase","Lo que veo en clase."],["HABILIDADES","habilidades","Lo que sé hacer."],["SOBRE MÍ","sobre-mi","Quién soy."],["CONTACTO","contacto","Hablemos."]];
+
+/* ====== SONIDO (sintetizado, sin archivos) ====== */
+let ac,mute=false;
+function beep(f,d,type='square',v=.05){if(mute)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const sfx={move:()=>beep(660,.06),ok:()=>{beep(520,.08);setTimeout(()=>beep(880,.12),70)},back:()=>{beep(440,.08);setTimeout(()=>beep(300,.12),70)}};
+
+/* ====== ESTADO ====== */
+const $=s=>document.querySelector(s);
+let scr='load',sel=0,sub=0;
+function show(id){document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on',e.id===id));scr=id;
+ $('#hints').style.display=id==='load'?'none':'flex';$('#escTxt').textContent=id==='menu'?'Cerrar':'Volver';
+ $('#hEnter').style.visibility=['menu','proyectos'].includes(id)?'visible':'hidden'}
+document.querySelectorAll('.nm').forEach(e=>e.textContent=D.name);
+
+/* Menú */
+const list=$('#list');
+MENU.forEach((m,i)=>{const b=document.createElement('button');b.className='item';b.textContent=m[0];b.setAttribute('role','menuitem');
+ b.onmouseenter=()=>{if(scr==='menu'&&sel!==i){sel=i;sfx.move();drawMenu()}};b.onclick=()=>{sel=i;open()};list.appendChild(b)});
+function drawMenu(){[...list.children].forEach((b,i)=>b.classList.toggle('sel',i===sel));
+ $('#mRole').textContent=D.role;$('#mName').textContent=D.name;$('#mDesc').textContent=MENU[sel][2]+" "+D.intro}
+function open(){sfx.ok();const id=MENU[sel][1];sub=0;show(id);draw()}
+function close(){sfx.back();show('menu');drawMenu()}
+
+/* Paneles */
+function rows(el,items,fn){el.innerHTML='';items.forEach((t,i)=>{const b=document.createElement('button');b.className='row'+(i===sub?' sel':'');b.textContent=t;b.onclick=()=>{sub=i;sfx.move();draw()};el.appendChild(b)})}
+function draw(){
+ if(scr==='proyectos'){rows($('#pList'),D.projects.map(p=>p.t));const p=D.projects[sub];
+  $('#pView').innerHTML=`<h3>${p.t}</h3>${p.foto?`<img class="pic" src="${p.foto}" alt="${p.t}" onerror="this.style.display='none'">`:''}<p>${p.d}</p><div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join('')}</div><div class="acts">${p.doc?`<a class="go file" href="${encodeURI(p.doc)}" target="_blank" rel="noopener">Ver documento</a>`:''}</div>`}
+ if(scr==='habilidades'){rows($('#sList'),D.skills.map(k=>k.c));const k=D.skills[sub];
+  $('#sView').innerHTML=`<div class="cat">${k.c}</div>`+k.s.map(([n,v])=>`<div class="sk"><span>${n}</span><div class="pips">${Array.from({length:10},(_,i)=>`<i class="${i<v?'f':''}"></i>`).join('')}</div></div>`).join('')}
+ if(scr==='sobre-mi'){$('#aView').innerHTML=`<div class="about"><div class="avatar">${D.name[0]}</div><div><h3>${D.name}</h3><p style="color:var(--cyan);font-weight:700">${D.role}</p></div></div><div style="margin-top:20px">${D.about.map(t=>`<div class="msg">${t}</div>`).join('')}</div>`}
+ if(scr==='codigos'){rows($('#kList'),D.codes.map(c=>c.t));const c=D.codes[sub];
+  $('#kView').innerHTML=`<h3>${c.t}</h3><div class="tags">${(c.tags||[]).map(t=>`<span>${t}</span>`).join('')}</div><p>${c.d}</p><pre class="code"><code>${esc(c.code)}</code></pre>`}
+ if(scr==='clase'){rows($('#lList'),D.learned.map(l=>l.t));const l=D.learned[sub];
+  $('#lView').innerHTML=`<h3>${l.t}</h3>`+l.p.map(x=>`<p>${x}</p>`).join('')}
+ if(scr==='contacto'){rows($('#cList'),D.contact.map(c=>c[0]));$('#cView').innerHTML=`<h3>${D.contact[sub][0]}</h3><p>${D.contact[sub][1]}</p>`}
+}
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
+const counts=()=>({codigos:D.codes.length,clase:D.learned.length,proyectos:D.projects.length,habilidades:D.skills.length,contacto:D.contact.length})[scr]||0;
+
+/* Teclado */
+function moveSub(d){const n=counts();if(!n)return;sub=(sub+d+n)%n;sfx.move();draw()}
+addEventListener('keydown',e=>{
+ const k=e.key;
+ if(k==='m'||k==='M'){toggleMute();return}
+ if(scr==='load'){if(k==='Enter'&&ready)enter();return}
+ if(k==='Escape'||k==='Backspace'){if(scr!=='menu')close();return}
+ if(scr==='menu'){
+  if(k==='ArrowDown'||k==='ArrowUp'){e.preventDefault();sel=(sel+(k==='ArrowDown'?1:-1)+MENU.length)%MENU.length;sfx.move();drawMenu()}
+  if(k==='Enter'||k==='ArrowRight')open()
+ }else{
+  if(['ArrowDown','ArrowRight'].includes(k)){e.preventDefault();moveSub(1)}
+  if(['ArrowUp','ArrowLeft'].includes(k)){e.preventDefault();moveSub(-1)}
+ }
+});
+$('#hEnter').onclick=()=>{if(scr==='menu')open()};
+$('#hEsc').onclick=()=>{scr==='menu'?sfx.back():close()};
+function toggleMute(){mute=!mute;$('#mTxt').textContent=mute?'no':'sí'}
+$('#mute').onclick=toggleMute;
+
+/* Pantalla de carga */
+let ready=false,p=0;
+const iv=setInterval(()=>{p=Math.min(100,p+Math.ceil(Math.random()*9));$('#fill').style.width=p+'%';$('#pct').textContent=p+'%';
+ if(p>=100){clearInterval(iv);ready=true;$('#start').classList.add('show')}},120);
+function enter(){if(!ready)return;sfx.ok();show('menu');drawMenu()}
+$('#load').onclick=enter;
+</script>
+</body>
+</html>
